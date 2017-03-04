@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.weeboos.vectordrawable.MainActivity"
+    android:orientation="vertical">
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Hello World!"  />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:onClick="anim"
+        app:srcCompat="@drawable/arrow_anim"/>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:onClick="anim"
+        app:srcCompat="@drawable/square_anim"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="anim"
+        app:srcCompat="@drawable/search_bar_anim"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="anim"
+        app:srcCompat="@drawable/path_anim"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="pathAnim"
+        app:srcCompat="@drawable/star_anim"/>
+</LinearLayout>
