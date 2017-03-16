@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.example.weeboos.bezier.MainActivity"
+    android:orientation="vertical">
+
+    <Button android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:onClick="secondBezier"
+        android:text="二阶贝塞尔曲线"  />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="thirdBezier"
+        android:text="三阶贝塞尔曲线"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="drawPad"
+        android:text="两点连线圆滑处理"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="jumpToPathMorthing"
+        android:text="路径变换动画"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="jumpToWave"
+        android:text="波浪动画"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="jumpToBasket"
+        android:text="贝塞尔移动轨迹"/>
+</LinearLayout>

@@ -17,7 +17,7 @@
         <com.example.component.demo.ViewPagerIndicator
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:orientation="horizontal">
+            >
 
         </com.example.component.demo.ViewPagerIndicator>
     </RelativeLayout>

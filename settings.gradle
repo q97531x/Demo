@@ -1,1 +1,1 @@
-include ':app', ':vectordrawable'
+include ':app', ':vectordrawable', ':bezier', ':pathmeasure'
