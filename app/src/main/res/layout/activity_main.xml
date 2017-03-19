@@ -15,11 +15,20 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="com.example.component.demo.MainActivity">
         <com.example.component.demo.ViewPagerIndicator
+            android:id="@+id/viewPagerIndicator"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
             >
 
         </com.example.component.demo.ViewPagerIndicator>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp">
+
+        </android.support.v4.view.ViewPager>
     </RelativeLayout>
 </layout>
 

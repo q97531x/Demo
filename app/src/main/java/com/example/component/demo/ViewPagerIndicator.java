@@ -8,6 +8,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,7 +31,9 @@ public class ViewPagerIndicator extends LinearLayout {
     //宽高
     private int width,height;
     //偏移量
-    private int offset = 0;
+    private float offset = 0;
+    //Tab数量
+    private int mTabVisibleCount;
 
     public ViewPagerIndicator(Context context) {
         super(context);
@@ -48,15 +52,17 @@ public class ViewPagerIndicator extends LinearLayout {
     public void setData(ArrayList<String> arrayList){
         this.arrayList = arrayList;
 
+
     }
 
-    public void setViewPager(ViewPager viewPager){
-        this.viewPager = viewPager;
+    public void setViewPager(ViewPager Pager){
+        this.viewPager = Pager;
         //监听viewPager的滑动事件
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                offset = width/3*(position+positionOffset);
+                invalidate();
             }
 
             @Override
@@ -78,11 +84,9 @@ public class ViewPagerIndicator extends LinearLayout {
         paint.setColor(getResources().getColor(R.color.colorPrimary));
         paint.setStrokeWidth(5);
 
-        //添加3个tab
-        for (int i = 0;i<3;i++){
-            TextView textView = new TextView(getContext());
-            this.addView(textView);
-        }
+        mTabVisibleCount = 3;
+
+
 
     }
 
@@ -91,26 +95,32 @@ public class ViewPagerIndicator extends LinearLayout {
         super.onSizeChanged(w, h, oldw, oldh);
         width = w;
         height = h;
-    }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        //添加3个textView
-        for(int i = 0;i<3;i++){
+        //添加3个tab
+        for (int i = 0;i<mTabVisibleCount;i++){
             final int j = i;
-            View view = getChildAt(i);
-            LinearLayout.LayoutParams lp = (LayoutParams)view.getLayoutParams();
-            lp.weight = 0;
-            lp.width = width/3;
-            view.setLayoutParams(lp);
-            view.setOnClickListener(new OnClickListener() {
+            TextView tv = new TextView(getContext());
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            lp.width = width / mTabVisibleCount;
+            tv.setGravity(Gravity.CENTER);
+            tv.setTextColor(getResources().getColor(R.color.colorPrimary));
+            tv.setText("hello");
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            tv.setLayoutParams(lp);
+            tv.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     viewPager.setCurrentItem(j);
                 }
             });
+            addView(tv);
         }
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -118,7 +128,7 @@ public class ViewPagerIndicator extends LinearLayout {
     protected void dispatchDraw(Canvas canvas) {
         canvas.save();
 
-        canvas.drawRoundRect(offset,height-20,width/3,height,20,20,paint);
+        canvas.drawRoundRect(offset,height-20,offset+width/3,height,20,20,paint);
         canvas.restore();
         super.dispatchDraw(canvas);
     }
