@@ -1,6 +1,7 @@
 package com.example.component.demo;
 
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,5 +49,10 @@ public class MainActivity extends AppCompatActivity {
         binding.viewPagerIndicator.setData(new ArrayList<String>());
         binding.viewPagerIndicator.setViewPager(binding.viewPager);
 
+    }
+
+    public void jump(View view){
+        Intent intent = new Intent(MainActivity.this,TestActivity.class);
+        startActivity(intent);
     }
 }

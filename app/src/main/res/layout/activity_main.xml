@@ -14,6 +14,11 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="com.example.component.demo.MainActivity">
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:onClick="jump"/>
         <com.example.component.demo.ViewPagerIndicator
             android:id="@+id/viewPagerIndicator"
             android:layout_width="match_parent"
