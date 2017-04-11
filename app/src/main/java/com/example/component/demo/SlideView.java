@@ -14,9 +14,9 @@ import android.view.View;
 
 public class SlideView extends View{
 
-    private Paint paint,tvPaint;
+    private Paint paint,tvPaint,paint1;
 
-    private int mStartPointX;
+    private float mStartPointX;
     private int mStartPointY;
 
     private int mEndPointX;
@@ -24,6 +24,9 @@ public class SlideView extends View{
 
     private int mMovePointX;
     private int mMovePointY;
+
+    private float distance = 0;     //滑动的距离
+    private int variable = 1;
 
     private int width,height;
 
@@ -47,9 +50,14 @@ public class SlideView extends View{
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(8);
         paint.setColor(Color.parseColor("#000000"));
+        paint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint1.setStyle(Paint.Style.FILL);
+        paint1.setStrokeWidth(8);
+        paint1.setColor(Color.parseColor("#66ccff"));
         tvPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         tvPaint.setStyle(Paint.Style.STROKE);
-        tvPaint.setStrokeWidth(100);
+        tvPaint.setStrokeWidth(5);
+        tvPaint.setTextScaleX(30);
         tvPaint.setColor(Color.parseColor("#ffffff"));
     }
 
@@ -67,29 +75,38 @@ public class SlideView extends View{
         super.onSizeChanged(w, h, oldw, oldh);
         width = w;
         height = h;
-        mStartPointX = 0;
 
-        mEndPointX = w;
 
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRect(0,0,width,height,paint);
-        canvas.drawText("nihao",width/2,height/2,tvPaint);
+        canvas.drawRect(0+variable*distance,0,width+distance,height,paint);
+        canvas.drawRect(-width+distance,0,0+distance,height,paint1);
+        canvas.drawText("nihao",0+distance,height/2,tvPaint);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                mStartPointX = event.getX();
                 break;
             case MotionEvent.ACTION_MOVE:
+                float curX = event.getX();
+                distance = curX - mStartPointX;
+                if(distance>20) {
+                    if(distance>=width){
+                        distance = width;
+
+                    }
+                    invalidate();
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 break;
         }
-        return super.onTouchEvent(event);
+        return true;
     }
 }

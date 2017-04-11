@@ -1,10 +1,12 @@
 package com.example.component.demo;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,6 +19,11 @@ public class Slide extends LinearLayout{
     private int l,r,t,b;
     private int pxWidth,pxHeight;
     private float downX;
+    private TextView tv1,tv2;
+
+    ValueAnimator animator;
+    private boolean isChangePlace = false;
+    private boolean idle = false;
 
     public Slide(Context context) {
         super(context);
@@ -24,10 +31,49 @@ public class Slide extends LinearLayout{
 
     public Slide(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public Slide(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    private void init(){
+        tv1 = new TextView(getContext());
+        tv1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        addView(tv1);
+        tv2 = new TextView(getContext());
+        tv2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        addView(tv2);
+
+        animator = ValueAnimator.ofFloat(0,1);
+        animator.setDuration(1000);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setRepeatCount(0);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int distance = (int)((float)animation.getAnimatedValue()*width);
+                if((float)animation.getAnimatedValue()==1.0){
+                    if(!isChangePlace) {
+                        getChildAt(0).layout(l -r, t, l, b);
+                        getChildAt(1).layout(l, t, r, b);
+                    }else {
+                        getChildAt(0).layout(l, t, r , b);
+                        getChildAt(1).layout(l - r , t, l, b);
+                    }
+                }else {
+                    if(!isChangePlace) {
+                        getChildAt(0).layout(l + distance, t, r + distance, b);
+                        getChildAt(1).layout(l - r + distance, t, l+distance, b);
+                    }else {
+                        getChildAt(0).layout(l -r + distance, t, l+distance, b);
+                        getChildAt(1).layout(l+distance, t, r+distance, b);
+                    }
+                }
+                invalidate();
+            }
+        });
     }
 
     @Override
@@ -42,8 +88,10 @@ public class Slide extends LinearLayout{
         this.b = b;
         this.l = l;
         this.r = r;
+        getChildAt(0).layout(l,t,r,b);
+        getChildAt(1).layout(l-r,t,l,b);
         pxWidth = r-l;
-        pxHeight = b-t;
+
     }
 
     @Override
@@ -51,16 +99,7 @@ public class Slide extends LinearLayout{
         super.onSizeChanged(w, h, oldw, oldh);
         width = w;
         height = h;
-        TextView textView = new TextView(getContext());
-        textView.setBackgroundColor(Color.parseColor("#000000"));
-        textView.setLayoutParams(new LayoutParams(width,height,1));
-        textView.layout(l,t,r,b);
-        addView(textView);
-        TextView textView1 = new TextView(getContext());
-        textView1.setBackgroundColor(Color.parseColor("#ffffff"));
-        textView1.setLayoutParams(new LayoutParams(width,height,1));
-        textView1.layout((int)2l-r,t,l,b);
-        addView(textView1);
+
     }
 
     @Override
@@ -76,11 +115,17 @@ public class Slide extends LinearLayout{
                 downX = event.getX();
                 break;
             case MotionEvent.ACTION_MOVE:
-                float curX = event.getX();
-                float distance = curX-downX;
-                getChildAt(0).layout((int)(l+distance),t,(int)(r+distance),b);
-                getChildAt(1).layout((int)(2l-r+distance),t,(int)(l+distance),b);
-                invalidate();
+                float moveDistance = event.getX() - downX;
+                if(moveDistance>40&&!idle){
+                    isChangePlace = !isChangePlace;
+                    idle = true;
+                    animator.start();
+
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                downX = 0;
+                idle = false;
                 break;
         }
         return true;
